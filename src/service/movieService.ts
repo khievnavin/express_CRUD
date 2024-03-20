@@ -1,6 +1,4 @@
-import { object } from "zod";
 import { MovieRepo } from "../repositories/movieRepo"
-
 
 export class MovieService{
   repo: MovieRepo;
@@ -27,4 +25,8 @@ export class MovieService{
     async deleteMovieID(movieId: string): Promise<any>{
       return await this.repo.deleteMovieByID(movieId);
     }
+    async createMovie(data:object): Promise<any>{
+      return await this.repo.createforMovie(data);
+    }
+
 }

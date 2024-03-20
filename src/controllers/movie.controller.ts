@@ -7,7 +7,7 @@ import { MovieService } from "../service/movieService";
 
 export const movieController = {
 
-   ///-----------GetID
+   ///-----------GetID---------
   getById: async function (req: Request, res: Response, next: NextFunction) {
     console.log(req.body);
     const movieService = new MovieService();
@@ -30,7 +30,7 @@ export const movieController = {
     }
   },
 
-   ///-----------GetAll
+   ///-----------GetAll---------
   getAll: async function (req: Request, res: Response, next: NextFunction) {
     const movieService = new MovieService();
     try {
@@ -45,7 +45,7 @@ export const movieController = {
       next(movieError);
     }
   },
- ///-----------Update
+ ///-----------Update---------
   updateById: async function (req: Request, res: Response, next: NextFunction) {
       const movieService = new MovieService()
     try {
@@ -74,7 +74,48 @@ export const movieController = {
     }
   },
 
-   ///-----------Delete
+  ///-----------Create---------
+  // create: async function (req: Request, res: Response) {
+  //   const movieServer = new MovieService();
+  //   try{
+  //     const Id = "v1";
+  //     const data =  {
+  //       movieId: Id,
+  //       name: req.body.name,
+  //       released_on: req.body.released_on,
+  //     }
+  //     const created = await movieServer.createMovie(data);
+  //   console.log(data);
+    
+  //   // const m = await new movieModel({
+  //   //   movieId: Id,
+  //   //   name: req.body.name,
+  //   //   released_on: req.body.released_on,
+  //   // }).save();
+  //   if(created){
+  //     throw new Error("Movie already exists")
+  //   }
+  //   res
+  //     .status(StatusCode.Created)
+  //     .json({ status: StatusCode , message: "Movie added successfully!!!", data: created });
+  // }catch (err){
+
+  // }
+  // },
+
+  create: async function (req: Request, res: Response, next: NextFunction) {
+    const movieService = new MovieService();
+    try {
+      const { name, released_on } = req.body;
+      const newMovie = await movieService.createMovie({ name, released_on});
+      res.status(201).json(newMovie);
+    } catch {
+      const movieError = new MovieError("Failed to create user.", 500);
+      next(movieError);
+    }
+  },
+
+   ///-----------Delete---------
   deleteById: async function (req: Request, res: Response, next: NextFunction) {
     // await movieModel.deleteOne({ _id: req.params.movieId });
 
@@ -98,24 +139,4 @@ export const movieController = {
     }
   },
 
-   ///-----------Create
-  create: async function (req: Request, res: Response) {
-    try{
-    console.log(req.body);
-    const Id = "v1";
-    const m = await new movieModel({
-      movieId: Id,
-      name: req.body.name,
-      released_on: req.body.released_on,
-    }).save();
-    if(m){
-      throw new Error("Movie already exists")
-    }
-    res
-      .status(StatusCode.Created)
-      .json({ status: StatusCode , message: "Movie added successfully!!!", data: m });
-  }catch (err){
-
-  }
-  },
 };
