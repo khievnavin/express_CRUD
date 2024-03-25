@@ -1,5 +1,6 @@
 import { Request , Response , NextFunction } from "express";
-import { movieModel } from "../models/movie";
+const movieModel = require('../models/movie')
+
 
 const getIdMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);

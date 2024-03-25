@@ -20,11 +20,12 @@ export class MovieService{
     return await this.repo.updateMovieID(movieId,data);
    }
 
-  
     // DeletMovieByID
     async deleteMovieID(movieId: string): Promise<any>{
       return await this.repo.deleteMovieByID(movieId);
     }
+
+    // CreateMovie
     async createMovie(data:object): Promise<any>{
       return await this.repo.createforMovie(data);
     }

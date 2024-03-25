@@ -2,7 +2,7 @@ import express, {Application, Request, Response , NextFunction} from 'express'
 import { studentRoute } from './routes/student.route';
 import { userRoute } from './routes/user.route';
 import path from 'path';
-import connectToDatabase from './utils/dbConnection';
+
 import { movieRouter } from './routes/movie.route';
 import bodyParser from 'body-parser';
 import { swaggerDocument } from './utils/swagger';
@@ -44,11 +44,7 @@ app.use('/movie', movieRouter);
 // app.listen(port, () => {
 //     console.log(`Sever is running on http://localhost:${port}`);
 // });
-connectToDatabase().then(() => {
-    app.listen(port, () => {
-        console.log(`Sever is running on http://localhost:${port}`);
-    });
-});
+
 
 // Global Error Handler
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {

@@ -1,7 +1,7 @@
-import { movieModel } from "../models/movie";
+const movieModel = require('../models/movie')
 
 export class MovieRepo {
-  ///GetAllMovie
+   ////GetAllMovie
     async getallMovie(): Promise<any>{
       return await movieModel.find();
     }

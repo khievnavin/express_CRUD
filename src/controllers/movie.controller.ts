@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { movieModel } from "../models/movie";
+const movieModel = require('../models/movie')
 import { MovieError } from "../utils/movieError";
 import { StatusCode } from "../utils/conts/statusCode";
 import { MovieService } from "../service/movieService";
 // import v1  from 'uuid';
 
 export const movieController = {
-
-   ///-----------GetID---------
+  ///-----------GetID Movie---------
   getById: async function (req: Request, res: Response, next: NextFunction) {
     console.log(req.body);
     const movieService = new MovieService();
@@ -30,31 +29,33 @@ export const movieController = {
     }
   },
 
-   ///-----------GetAll---------
+  ///-----------GetAll Movie---------
   getAll: async function (req: Request, res: Response, next: NextFunction) {
     const movieService = new MovieService();
     try {
       const movies = await movieService.getMovies();
-      res.json({
+      if(!movies){
+        throw new Error("No Movie found");
+      }
+      res.status(StatusCode.OK).json({
         status: StatusCode.OK,
         message: "Movies list found!!!",
         data: movies,
       });
-    } catch (err) {
-      const movieError = new MovieError("Movie Updated successfully", 500);
+    } catch (err:any) {
+      const movieError = new MovieError(err.message, 500);
       next(movieError);
     }
   },
- ///-----------Update---------
+  ///-----------Update Movie---------
   updateById: async function (req: Request, res: Response, next: NextFunction) {
-      const movieService = new MovieService()
+    const movieService = new MovieService();
     try {
-      
-      const data =  {
+      const data = {
         name: req.body.name,
         released_on: req.body.released_on,
-      }
-      const m= await movieService.updateMovie(req.params.movieId,data);
+      };
+      const m = await movieService.updateMovie(req.params.movieId, data);
       if (m) {
         res.json({
           status: StatusCode.OK,
@@ -69,7 +70,10 @@ export const movieController = {
         next(movieError);
       }
     } catch (err) {
-      const movieError = new MovieError("Server Error",StatusCode.InternalServerError);
+      const movieError = new MovieError(
+        "Server Error",
+        StatusCode.InternalServerError
+      );
       next(movieError);
     }
   },
@@ -86,7 +90,7 @@ export const movieController = {
   //     }
   //     const created = await movieServer.createMovie(data);
   //   console.log(data);
-    
+
   //   // const m = await new movieModel({
   //   //   movieId: Id,
   //   //   name: req.body.name,
@@ -102,12 +106,12 @@ export const movieController = {
 
   // }
   // },
-
+  ///----------Create Movie-----------
   create: async function (req: Request, res: Response, next: NextFunction) {
     const movieService = new MovieService();
     try {
       const { name, released_on } = req.body;
-      const newMovie = await movieService.createMovie({ name, released_on});
+      const newMovie = await movieService.createMovie({ name, released_on });
       res.status(201).json(newMovie);
     } catch {
       const movieError = new MovieError("Failed to create user.", 500);
@@ -115,28 +119,30 @@ export const movieController = {
     }
   },
 
-   ///-----------Delete---------
+  ///-----------Delete Movie---------
   deleteById: async function (req: Request, res: Response, next: NextFunction) {
     // await movieModel.deleteOne({ _id: req.params.movieId });
 
     const movieService = new MovieService();
     try {
-     const deleteById = await movieService.deleteMovieID(req.params.movieId);
-     if (!deleteById){
-      const movieError = new MovieError("ID not found",  StatusCode.NotFound);
-      next(movieError);
-     } else {
-      res.json({
-        status: StatusCode.OK,
-        message: "Movie deleted successfully!!!",
-        data: null,
-      });
-     }
+      const deleteById = await movieService.deleteMovieID(req.params.movieId);
+      if (!deleteById) {
+        const movieError = new MovieError("ID not found", StatusCode.NotFound);
+        next(movieError);
+      } else {
+        res.json({
+          status: StatusCode.OK,
+          message: "Movie deleted successfully!!!",
+          data: null,
+        });
+      }
     } catch (err) {
       return res
         .status(500)
-        .json({status: StatusCode.InternalServerError , messsage: "Movie deleted not successfully!! ID Not Found!!" });
+        .json({
+          status: StatusCode.InternalServerError,
+          messsage: "Movie deleted not successfully!! ID Not Found!!",
+        });
     }
   },
-
 };
