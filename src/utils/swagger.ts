@@ -6,6 +6,12 @@ export const swaggerDocument = {
       description: 'API to manage movies',
       version: '1.0.0',
     },
+    servers: [
+      {
+          url: "http://localhost:3000",
+          description: "Movies server"
+      }
+  ],
     paths: {
       '/movie': {
         get: {

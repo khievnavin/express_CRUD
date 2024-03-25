@@ -9,7 +9,8 @@ import { swaggerDocument } from './utils/swagger';
 import swaggerUi from 'swagger-ui-express'
 
 
-export const app: Application = express();
+
+const app: Application = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true , limit: "30mb"}));
@@ -52,3 +53,5 @@ app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
       message: err.message,
     });
   }); 
+
+  export default app

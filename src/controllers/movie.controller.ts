@@ -79,34 +79,7 @@ export const movieController = {
   },
 
   ///-----------Create---------
-  // create: async function (req: Request, res: Response) {
-  //   const movieServer = new MovieService();
-  //   try{
-  //     const Id = "v1";
-  //     const data =  {
-  //       movieId: Id,
-  //       name: req.body.name,
-  //       released_on: req.body.released_on,
-  //     }
-  //     const created = await movieServer.createMovie(data);
-  //   console.log(data);
-
-  //   // const m = await new movieModel({
-  //   //   movieId: Id,
-  //   //   name: req.body.name,
-  //   //   released_on: req.body.released_on,
-  //   // }).save();
-  //   if(created){
-  //     throw new Error("Movie already exists")
-  //   }
-  //   res
-  //     .status(StatusCode.Created)
-  //     .json({ status: StatusCode , message: "Movie added successfully!!!", data: created });
-  // }catch (err){
-
-  // }
-  // },
-  ///----------Create Movie-----------
+ 
   create: async function (req: Request, res: Response, next: NextFunction) {
     const movieService = new MovieService();
     try {

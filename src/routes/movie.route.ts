@@ -9,17 +9,16 @@ export const movieRouter = express.Router();
 movieRouter.get("/", movieController.getAll);
 movieRouter.post(
   "/",
-  (req: Request, res: Response, next: NextFunction) => {
-    validateUserData(req, res, next, movieSchema);
-  },
+  
+    validateUserData(movieSchema),
+
   movieController.create
 );
 movieRouter.get("/:movieId", validateMongooseId, movieController.getById);
 movieRouter.put(
   "/:movieId",
-  (req: Request, res: Response, next: NextFunction) => {
-    validateUserData(req, res, next, movieSchema);
-  },
+    validateUserData( movieSchema)
+  ,
   movieController.updateById
 );
 movieRouter.delete("/:movieId", movieController.deleteById);
