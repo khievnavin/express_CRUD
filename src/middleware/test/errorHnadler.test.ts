@@ -3,12 +3,12 @@ import errorhandler from '../errorHandler'
 import { BaseCustomError } from '../../utils/conts/BaseError';
 
 describe('errorHandler', () => {
-    // Test case: checking if errorHandler handles BaseCustomError correctly
+   
     it('should handle BaseCustomError and send appropriate response', () => {
       // Creating a mock BaseCustomError instance with a message and status code
       const mockError = new BaseCustomError('Test error', 404);
       
-      // Creating mock objects for Request, Response, and NextFunction
+      
       const mockRequest = {} as Request;
       const mockResponse = {
         status: jest.fn().mockReturnThis(), // Mocking the status method of response
@@ -28,13 +28,13 @@ describe('errorHandler', () => {
       expect(mockNext).toHaveBeenCalled(); // Asserting that next() was not called
     });
   
-    // Test case: checking if errorHandler calls next() when error is not a BaseCustomError
+  
     it('should call next if error is not an instance of BaseCustomError', () => {
       // Creating a regular Error instance
       const mockError = new Error('Test error');
-      const mockRequest = {} as Request; // Mocking the Request object
-      const mockResponse = {} as Response; // Mocking the Response object
-      const mockNext = jest.fn() as NextFunction; // Mocking the NextFunction
+      const mockRequest = {} as Request; 
+      const mockResponse = {} as Response; 
+      const mockNext = jest.fn() as NextFunction; 
   
       // Calling the errorHandler function with the mock objects
       errorhandler(mockError, mockRequest, mockResponse, mockNext);

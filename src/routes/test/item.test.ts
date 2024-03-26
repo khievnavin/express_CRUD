@@ -62,7 +62,14 @@ describe("GET /movie", () => {
           expect(response.body.data.name).toEqual(MOCK_MOVIE.name)
           expect(response.body.data.released_on).toEqual(MOCK_MOVIE.released_on)
 
-        })
+        });
+
+          it("should delete a movie by id", async () => {
+              const response = await request(app).delete(`/movie/${movieId}`).expect(200);
+      
+              expect(response.body.message).toEqual("Movie deleted successfully!!!");
+          });
+    
     });
 });
 

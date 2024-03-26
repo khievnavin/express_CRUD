@@ -5,7 +5,7 @@ import { StatusCode } from "../utils/conts/statusCode";
 import { MovieService } from "../service/movieService";
 // import v1  from 'uuid';
 
-export const movieController = {
+export  const movieController = {
   ///-----------GetID Movie---------
   getById: async function (req: Request, res: Response, next: NextFunction) {
     console.log(req.body);
@@ -15,15 +15,11 @@ export const movieController = {
       if (m) {
         res.json({ status: "200", message: "Movie found!!!", data: m });
       } else {
-        // const error = new Error("Movie not found! Wrong IDs Movie!!");
-        //     res.status(404); // Set status code
-        //     next(error); // Pass the error to the error handling middleware
+     
         const movieError = new MovieError("ID not Found", 404);
         next(movieError);
       }
     } catch (err) {
-      // return res.status(404).json({ message: "Movie not found" });
-      // next(new Error("Movie not found!! IDs Movie Invalid!!"));
       const movieError = new MovieError("Server Error", 500);
       next(movieError);
     }
@@ -94,28 +90,131 @@ export const movieController = {
 
   ///-----------Delete Movie---------
   deleteById: async function (req: Request, res: Response, next: NextFunction) {
-    // await movieModel.deleteOne({ _id: req.params.movieId });
-
     const movieService = new MovieService();
     try {
       const deleteById = await movieService.deleteMovieID(req.params.movieId);
-      if (!deleteById) {
-        const movieError = new MovieError("ID not found", StatusCode.NotFound);
-        next(movieError);
+      if (deleteById.deleteCount === 0) {
+        throw new MovieError("ID not found", StatusCode.NotFound);
+  
       } else {
-        res.json({
+        res.status(StatusCode.OK).json({
           status: StatusCode.OK,
           message: "Movie deleted successfully!!!",
           data: null,
         });
       }
     } catch (err) {
-      return res
-        .status(500)
-        .json({
-          status: StatusCode.InternalServerError,
-          messsage: "Movie deleted not successfully!! ID Not Found!!",
-        });
+       if (err instanceof MovieError){
+         next(err)
+       }
+       next("Internal server error1")
     }
   },
 };
+
+
+
+
+// import { Request, Response, NextFunction } from "express";
+// import { MovieError } from "../utils/movieError";
+// import { StatusCode } from "../utils/conts/statusCode";
+// import { MovieService } from "../service/movieService";
+
+// export class MovieController {
+//   private movieService: MovieService;
+
+//   constructor() {
+//     this.movieService = new MovieService();
+//   }
+
+//   // Get Movie by ID
+//   public async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
+//     try {
+//       const movieId = req.params.movieId;
+//       const movie = await this.movieService.getMovieID(movieId);
+
+//       if (movie) {
+//         res.status(StatusCode.OK)
+//         .json({ message: "Movie found!!!", data: movie });
+//       } else {
+//         throw new MovieError("ID not Found", StatusCode.NotFound);
+//       }
+//     } catch (err) {
+//       next(err instanceof MovieError ? err : new MovieError("Server Error", StatusCode.InternalServerError));
+//     }
+//   }
+
+//   // Get All Movies
+//   public async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+//     try {
+//       const movies = await this.movieService.getMovies();
+
+//       if (!movies) {
+//         throw new Error("No Movie found");
+//       }
+
+//       res.status(StatusCode.OK).json({
+//         status: StatusCode.OK,
+//         message: "Movies list found!!!",
+//         data: movies,
+//       });
+//     } catch (err: any) {
+//       next(new MovieError(err.message, StatusCode.InternalServerError));
+//     }
+//   }
+
+//   // Update Movie by ID
+//   public async updateById(req: Request, res: Response, next: NextFunction): Promise<void> {
+//     try {
+//       const movieId = req.params.movieId;
+//       const data = {
+//         name: req.body.name,
+//         released_on: req.body.released_on,
+//       };
+
+//       const updatedMovie = await this.movieService.updateMovie(movieId, data);
+
+//       if (updatedMovie) {
+//         res.status(StatusCode.Accepted).json({
+//           message: "Movie updated successfully!!!",
+//           data: updatedMovie,
+//         });
+//       } else {
+//         throw new MovieError("Movie Updated not successfully, ID not found!!!", StatusCode.NotFound);
+//       }
+//     } catch (err) {
+//       next(err instanceof MovieError ? err : new MovieError("Server Error", StatusCode.InternalServerError));
+//     }
+//   }
+
+//   // Create Movie
+//   public async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+//     try {
+//       const { name, released_on } = req.body;
+//       const newMovie = await this.movieService.createMovie({ name, released_on });
+//       res.status(StatusCode.Created).json(newMovie);
+//     } catch (err) {
+//       next(new MovieError("Failed to create movie.", StatusCode.InternalServerError));
+//     }
+//   }
+
+//   // Delete Movie by ID
+//   public async deleteById(req: Request, res: Response, next: NextFunction): Promise<void> {
+//     try {
+//       const movieId = req.params.movieId;
+//       const deleteResult = await this.movieService.deleteMovieID(movieId);
+
+//       if (deleteResult.deleteCount === 0) {
+//         throw new MovieError("ID not found", StatusCode.NoContent);
+//       }
+
+//       res.status(StatusCode.NoContent).json({
+      
+//         message: "Movie deleted successfully!!!",
+//         data: null,
+//       });
+//     } catch (err) {
+//       next(err instanceof MovieError ? err : new MovieError("Internal server error", StatusCode.InternalServerError));
+//     }
+//   }
+// }
