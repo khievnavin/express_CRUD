@@ -2,7 +2,7 @@ import request from "supertest";
 import  app  from "../../App";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose, { ConnectOptions } from "mongoose";
-import { movieRouter } from "../movie.route";
+// import { movieRouter } from "../movie.route";
 import { MovieRepo } from "../../repositories/movieRepo";
 
 let mongoServer: MongoMemoryServer;
@@ -24,8 +24,6 @@ describe("GET /movie", () => {
   beforeEach(() => {
     const movie = new MovieRepo();
   }),
-
-    
 
     describe("POST /movie", () => {
         let movieId: string;

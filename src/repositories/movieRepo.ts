@@ -2,7 +2,7 @@ const movieModel = require('../models/movie')
 
 export class MovieRepo {
    ////GetAllMovie
-    async getallMovie(): Promise<any>{
+    async getAllMovie(): Promise<any>{
       return await movieModel.find();
     }
 

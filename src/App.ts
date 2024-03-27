@@ -3,12 +3,11 @@ import { studentRoute } from './routes/student.route';
 import { userRoute } from './routes/user.route';
 import path from 'path';
 
-import { movieRouter } from './routes/movie.route';
+import  movieRouter  from './routes/movie.route';
 import bodyParser from 'body-parser';
-import { swaggerDocument } from './utils/swagger';
-import swaggerUi from 'swagger-ui-express'
 
-
+import swaggerUi from "swagger-ui-express";
+import * as swaggerDocument from "./swagger.json";
 
 const app: Application = express();
 const port = 3000;
@@ -16,7 +15,7 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true , limit: "30mb"}));
 app.use(bodyParser.json());
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.set('view engine', 'ejs');
 app.set("views",path.join(__dirname,'views'))
@@ -36,6 +35,8 @@ app.use((req, res, next) => {
     });
     next();
   });
+
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/student', studentRoute);
 app.use('/user', userRoute);

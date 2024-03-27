@@ -1,33 +1,40 @@
-import { MovieRepo } from "../repositories/movieRepo"
+import { MovieRepo } from "../repositories/movieRepo";
 
-export class MovieService{
-  repo: MovieRepo;
-  constructor(){
-    this.repo = new MovieRepo();
-  }
+export class MovieService {
 
-  //    GetAllMovie
-  async getMovies(): Promise<any>{
-    return await this.repo.getallMovie();
+   private movieRepo: MovieRepo;
+
+  constructor() {
+    this.movieRepo = new MovieRepo();
   }
-   //   GetMovieByID
+ async createMovie(movie: any): Promise<any>{
+    return await this.movieRepo.createforMovie(movie)
+   }
+  async getAllMovie(): Promise<any> {
+    return await this.movieRepo.getAllMovie();
+  }
+  // async getAllMovie(): Promise<any>{
+  //   return await this.repo.getallMovie();
+  // }
+  
+    // GetMovieByID
    async getMovieID(movieId:string): Promise<any>{
-    return await this.repo.getMovieById(movieId);
+    return await this.movieRepo.getMovieById(movieId);
    }
 
   //    updateMovie
    async updateMovie(movieId: string,data:object): Promise<any>{
-    return await this.repo.updateMovieID(movieId,data);
+    return await this.movieRepo.updateMovieID(movieId,data);
    }
 
-    // DeletMovieByID
+  //   // DeletMovieByID
     async deleteMovieID(movieId: string): Promise<any>{
-      return await this.repo.deleteMovieByID(movieId);
+      return await this.movieRepo.deleteMovieByID(movieId);
     }
 
-    // CreateMovie
-    async createMovie(data:object): Promise<any>{
-      return await this.repo.createforMovie(data);
-    }
+  //   // CreateMovie
+  //   async createMovie(data:object): Promise<any>{
+  //     return await this.repo.createforMovie(data);
+  //   }
 
 }
