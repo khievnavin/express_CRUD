@@ -33,6 +33,7 @@ import { any } from "zod";
 const movieRouter = express.Router();
 const movieController = new MovieController();
 
+//Get
 movieRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const movie = await movieController.getAllMovie();
@@ -42,6 +43,7 @@ movieRouter.get('/', async (req: Request, res: Response, next: NextFunction) => 
   }
 });
 
+//GetbyId
 movieRouter.get('/:movieId', async (req, res) => {
   try{
     const movie = await movieController.getMovieID(req.params.movieId);
@@ -50,6 +52,8 @@ movieRouter.get('/:movieId', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+//Post
 movieRouter.post('/' ,async (req, res) => {
   try{
     const movie = await movieController.createMovie(req.body);
@@ -59,6 +63,7 @@ movieRouter.post('/' ,async (req, res) => {
   }
 });
 
+//Put
 movieRouter.put('/:movieId', async (req, res) => {
   try{
     const movie = await movieController.updateMovie(req.params.movieId, req.body);
@@ -68,6 +73,7 @@ movieRouter.put('/:movieId', async (req, res) => {
   }
 });
 
+//Delete
 movieRouter.delete('/:movieId', async (req, res) => {
   try{
     const movie = await movieController.deleteMovieID(req.params.movieId);

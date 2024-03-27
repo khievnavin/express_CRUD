@@ -138,7 +138,7 @@ export class MovieController {
       if (Array.isArray(movies) && movies.length > 0) {
         return {
           status: "success",
-          message: "Movies are found",
+          message: "Movies list found!!!",
           data: movies,
         };
       } else {
@@ -158,7 +158,7 @@ export class MovieController {
       if (movie) {
         return {
           status: "success",
-          message: "Movie is found",
+          message: "Movie found!!!",
           data: movie,
         };
       } else {
@@ -197,7 +197,15 @@ export class MovieController {
     try {
       const movieService = new MovieService();
       const deletedMovie = await movieService.deleteMovieID(movieId);
-      return deletedMovie;
+      if(deletedMovie){
+        return {
+          status: "success",
+          message: "Movie deleted successfully!!!",
+          data: null,
+        };
+      }else{
+        throw new MovieError("Movie not found", StatusCode.NotFound);
+      }
     } catch (error: any) {
       throw new MovieError(error.message || "Failed to delete movie", StatusCode.InternalServerError); // Adjust status code as per your requirement
     }

@@ -47,7 +47,7 @@ describe("Movie Integration Test", () => {
             await movieRepo.createforMovie(Movie);
         }));
         
-        const allMovies = await movieRepo.getallMovie();
+        const allMovies = await movieRepo.getAllMovie();
 
         expect(allMovies).toHaveLength(2);
         expect(allMovies[0].name).toEqual(movieData[0].name);
