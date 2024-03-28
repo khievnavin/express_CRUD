@@ -27,6 +27,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { MovieController } from "../controllers/movie.controller";
 import { any } from "zod";
+import { Options } from "src/repositories/movieRepo";
 // import { ValidateMongooseId } from "../middleware/mongoose"; // Adjust this import as per your middleware implementation
 // import { ValidateUserData } from "../middleware/movieValidation"; // Adjust this import as per your middleware implementation
 
@@ -36,8 +37,18 @@ const movieController = new MovieController();
 //Get
 movieRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const movie = await movieController.getAllMovie();
-    res.status(200).json(movie);
+    const {page = 1 , limit = 5} = req.query;
+
+    const options: Options ={
+      page:parseInt(page as string, 10),
+      limit:parseInt(limit as string, 10),
+    }
+    const movie = await movieController.getAllMovie(options);
+    res.status(200).json({
+      message: "Movies list found!!!",
+      movies: movie.movies,
+      paginations: movie.paginations
+    });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

@@ -1,6 +1,7 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import {MovieRepo} from "../movieRepo" ;
 import mongoose from "mongoose";
+import { Options } from "../movieRepo";
 
 let mongoServer: MongoMemoryServer;
 
@@ -27,7 +28,7 @@ describe("Movie Integration Test", () => {
     it("creates a new MovieRepo", async () =>{
         const movieData = {
             name: "Movie",
-            released_on: "02-07-2025",
+            released_on: "25-12-2024",
         };
 
         const newMovie = await movieRepo.createforMovie(movieData);
@@ -41,24 +42,25 @@ describe("Movie Integration Test", () => {
     it("Get Movies", async() =>{
         const movieData = [
             { name : "Movie" , released_on : "25-12-2024"},
-            // { name : "Movie2" , released_on : "25-12-2024"}
+            
         ]
         await Promise.all(movieData.map( async(Movie)=>{
             await movieRepo.createforMovie(Movie);
         }));
         
-        const allMovies = await movieRepo.getAllMovie();
+        const response = await movieRepo.getAllMovie({ page: 1, limit: 10 });
 
-        expect(allMovies).toHaveLength(2);
-        expect(allMovies[0].name).toEqual(movieData[0].name);
-        // expect(allMovies[1].name).toEqual(movieData[1].name);
+    const allMovies = response.movies;
 
+    expect(allMovies.length).toEqual(2);
+    expect(allMovies[0].name).toEqual(movieData[0].name);
+    expect(allMovies[0].released_on).toEqual(movieData[0].released_on);
     });
 
     it("Update Movie",async () => {
         const movieData = {
             name: "Movie",
-            released_on: "02-07-2025",
+            released_on: "15-11-2024",
         };
         const newMovie = await movieRepo.createforMovie(movieData);
         const updateMovie = {

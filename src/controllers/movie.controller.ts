@@ -115,10 +115,11 @@
 
 
 // MovieController.ts
-import { Route, Get, Path, Post, Body, Put, Delete } from "tsoa";
+import { Route, Get, Path, Post, Body, Put, Delete, Queries } from "tsoa";
 import { MovieError } from "../utils/movieError";
 import { StatusCode } from "../utils/conts/statusCode";
 import { MovieService } from "../service/movieService";
+import { Options } from "src/repositories/movieRepo";
 
 
 interface Movie{
@@ -131,19 +132,21 @@ interface Movie{
 export class MovieController {
 
   @Get("/")
-  public async getAllMovie(): Promise<any> {
+  public async getAllMovie(@Queries() options: Options): Promise<any> {
     try {
       const movieService = new MovieService();
-      const movies = await movieService.getAllMovie();
-      if (Array.isArray(movies) && movies.length > 0) {
-        return {
-          status: "success",
-          message: "Movies list found!!!",
-          data: movies,
-        };
-      } else {
-        throw new MovieError("No movies found", StatusCode.NotFound);
-      }
+      const movies = await movieService.getAllMovie(options);
+      // if (Array.isArray(movies) && movies.length > 0) {
+      //   return {
+      //     status: "success",
+      //     message: "Movies list found!!!",
+      //     data: movies,
+      //   };
+      // } else {
+      //   throw new MovieError("No movies found", StatusCode.NotFound);
+      // }
+
+      return movies
     } catch (error: any) {
       throw new MovieError(error.message || "Failed to fetch movies", StatusCode.InternalServerError);
     }

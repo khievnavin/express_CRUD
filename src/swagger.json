@@ -7,6 +7,24 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"OptionsType": {
+				"properties": {
+					"page": {
+						"type": "number",
+						"format": "double"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"page",
+					"limit"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Movie": {
 				"properties": {
 					"movieId": {
@@ -53,7 +71,26 @@
 					}
 				},
 				"security": [],
-				"parameters": []
+				"parameters": [
+					{
+						"in": "query",
+						"name": "page",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			},
 			"post": {
 				"operationId": "CreateMovie",

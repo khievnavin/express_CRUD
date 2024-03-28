@@ -1,5 +1,6 @@
-import { MovieRepo } from "../repositories/movieRepo";
 
+import { MovieRepo } from "../repositories/movieRepo";
+import { Options } from "../repositories/movieRepo"; 
 export class MovieService {
 
    private movieRepo: MovieRepo;
@@ -10,12 +11,12 @@ export class MovieService {
  async createMovie(movie: any): Promise<any>{
     return await this.movieRepo.createforMovie(movie)
    }
-  async getAllMovie(): Promise<any> {
-    return await this.movieRepo.getAllMovie();
-  }
-  // async getAllMovie(): Promise<any>{
-  //   return await this.repo.getallMovie();
+  // async getAllMovie(options: OptionsType): Promise<any> {
+  //   return await this.movieRepo.getAllMovie(options);
   // }
+  async getAllMovie(options: Options): Promise<any>{
+    return await this.movieRepo.getAllMovie(options);
+  }
   
     // GetMovieByID
    async getMovieID(movieId:string): Promise<any>{
