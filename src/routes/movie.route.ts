@@ -9,7 +9,7 @@
 // movieRouter.get("/", movieController.getAll);
 // movieRouter.post(
 //   "/",
-  
+
 //     validateUserData(movieSchema),
 
 //   movieController.create
@@ -23,7 +23,6 @@
 // );
 // movieRouter.delete("/:movieId", movieController.deleteById);
 
-
 import express, { Request, Response, NextFunction } from "express";
 import { MovieController } from "../controllers/movie.controller";
 import { any } from "zod";
@@ -35,68 +34,69 @@ const movieRouter = express.Router();
 const movieController = new MovieController();
 
 //Get
-movieRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const {page = 1 , limit = 5} = req.query;
+movieRouter.get(
+  "/",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { page = 1, limit = 5 } = req.query;
 
-    const options: Options ={
-      page:parseInt(page as string, 10),
-      limit:parseInt(limit as string, 10),
+      const options: Options = {
+        page: parseInt(page as string, 10),
+        limit: parseInt(limit as string, 10),
+      };
+      const movie = await movieController.getAllMovie(options);
+      res.status(200).json({
+        message: "Movies list found!!!",
+        movies: movie.movies,
+        paginations: movie.paginations,
+      });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
     }
-    const movie = await movieController.getAllMovie(options);
-    res.status(200).json({
-      message: "Movies list found!!!",
-      movies: movie.movies,
-      paginations: movie.paginations
-    });
+  }
+);
+
+//GetbyId
+movieRouter.get("/:movieId", async (req, res) => {
+  try {
+    const movie = await movieController.getMovieID(req.params.movieId);
+    res.status(200).json(movie);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 });
 
-//GetbyId
-movieRouter.get('/:movieId', async (req, res) => {
-  try{
-    const movie = await movieController.getMovieID(req.params.movieId);
-    res.status(200).json(movie);
-  }catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
 //Post
-movieRouter.post('/' ,async (req, res) => {
-  try{
+movieRouter.post("/", async (req, res) => {
+  try {
     const movie = await movieController.createMovie(req.body);
     res.status(201).json(movie);
-  }catch (error: any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 });
 
 //Put
-movieRouter.put('/:movieId', async (req, res) => {
-  try{
-    const movie = await movieController.updateMovie(req.params.movieId, req.body);
+movieRouter.put("/:movieId", async (req, res) => {
+  try {
+    const movie = await movieController.updateMovie(
+      req.params.movieId,
+      req.body
+    );
     res.status(200).json(movie);
-  }catch (error: any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 });
 
 //Delete
-movieRouter.delete('/:movieId', async (req, res) => {
-  try{
+movieRouter.delete("/:movieId", async (req, res) => {
+  try {
     const movie = await movieController.deleteMovieID(req.params.movieId);
     res.status(200).json(movie);
-  }catch (error: any) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 });
 
 export default movieRouter;
-
-
-
-
-

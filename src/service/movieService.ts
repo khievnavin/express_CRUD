@@ -33,9 +33,4 @@ export class MovieService {
       return await this.movieRepo.deleteMovieByID(movieId);
     }
 
-  //   // CreateMovie
-  //   async createMovie(data:object): Promise<any>{
-  //     return await this.repo.createforMovie(data);
-  //   }
-
 }
